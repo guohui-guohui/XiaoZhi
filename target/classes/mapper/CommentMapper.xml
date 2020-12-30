@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.CommentDao">
+
+    <select id="queryAllComment" resultType="Common">
+        select * from t_common where question_id=#{question_id} order by common_time desc limit 0,2
+    </select>
+    <!--查用户-->
+    <select id="queryCommentUser" resultType="User">
+        select * from user where id = (
+            select user_id from t_common where id=#{id}
+        )
+    </select>
+    <!--添加评论-->
+    <insert id="addOneComment">
+        insert into t_common(common_describe,question_id,user_id,common_time) values(
+                #{common_describe},#{question_id},#{user_id},#{common_time}
+        )
+    </insert>
+    <select id="queryAllCommentCount" resultType="Common">
+        select * from t_common where question_id=#{question_id} order by common_time desc
+    </select>
+    <update id="queryQuestionByIdChangeNum">
+        update t_question set p_num = #{cos} where id=#{id}
+    </update>
+
+    <!--点赞-->
+    <update id="dianzan">
+        update t_common set c_count = #{c_count} where id=#{id}
+    </update>
+    <select id="queryById" resultType="Common">
+        select * from t_common where id=#{id}
+    </select>
+
+</mapper>
